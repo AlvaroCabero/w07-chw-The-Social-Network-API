@@ -1,5 +1,5 @@
 require("dotenv").config();
-const debug = require("debug")("user:controller");
+const debug = require("debug")("users:controller");
 const bcrypt = require("bcrypt");
 const chalk = require("chalk");
 const jwt = require("jsonwebtoken");
@@ -50,7 +50,7 @@ const userSignUp = async (req, res, next) => {
     newUser.photo = newUser.photo ? newUser.photo : "";
     newUser.bio = newUser.bio ? newUser.bio : "";
     newUser.password = await bcrypt.hash(newUser.password, 10);
-    User.create(newUser);
+    await User.create(newUser);
     res.json(newUser);
   }
 };
