@@ -17,7 +17,7 @@ const userLogin = async (req, res, next) => {
     const rightPassword = await bcrypt.compare(password, user.password);
     if (!rightPassword) {
       debug(chalk.red("Wrong credentialss"));
-      const error = new Error("Wrong credentials");
+      const error = new Error("Wrong credentialss");
       error.code = 401;
       next(error);
     } else {

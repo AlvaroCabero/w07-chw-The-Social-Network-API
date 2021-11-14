@@ -38,4 +38,40 @@ describe("Given an userLogin function", () => {
       expect(next.mock.calls[0][0]).toHaveProperty("code", expectedError.code);
     });
   });
+
+  describe("When it receives a right username but the wrong password", () => {
+    test("Then it should invoke next function with 401 error", async () => {
+      const user = {
+        username: "abram",
+        password: "abram",
+      };
+
+      User.findOne = jest.fn().mockResolvedValue(user);
+
+      bcrypt.compare = jest.fn().mockResolvedValue(false);
+
+      const req = {
+        body: {
+          username: "abram",
+          password: "myfriend",
+        },
+      };
+
+      const expectedError = new Error("Wrong credentialss");
+      expectedError.code = 401;
+
+      const next = jest.fn();
+
+      await userLogin(req, null, next);
+
+      expect(next).toHaveBeenCalledWith(expectedError);
+
+      expect(next.mock.calls[0][0]).toHaveProperty(
+        "message",
+        expectedError.message
+      );
+
+      expect(next.mock.calls[0][0]).toHaveProperty("code", expectedError.code);
+    });
+  });
 });
