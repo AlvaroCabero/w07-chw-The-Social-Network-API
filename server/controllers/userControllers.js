@@ -17,14 +17,14 @@ const userLogin = async (req, res, next) => {
     const rightPassword = await bcrypt.compare(password, user.password);
     if (!rightPassword) {
       debug(chalk.red("Wrong credentialss"));
-      const error = new Error("Wrong credentials");
+      const error = new Error("Wrong credentialss");
       error.code = 401;
       next(error);
     } else {
       const token = jwt.sign(
         {
           id: user.id,
-          name: user.name,
+          username: user.username,
         },
         process.env.SECRET,
         {
@@ -45,11 +45,11 @@ const userSignUp = async (req, res, next) => {
     error.code = 400;
     next(error);
   } else {
-    newUser.friends = [];
-    newUser.enemies = [];
+    newUser.password = await bcrypt.hash(newUser.password, 10);
     newUser.photo = newUser.photo ? newUser.photo : "";
     newUser.bio = newUser.bio ? newUser.bio : "";
-    newUser.password = await bcrypt.hash(newUser.password, 10);
+    newUser.friends = [];
+    newUser.enemies = [];
     await User.create(newUser);
     res.json(newUser);
   }
