@@ -45,11 +45,11 @@ const userSignUp = async (req, res, next) => {
     error.code = 400;
     next(error);
   } else {
-    newUser.friends = [];
-    newUser.enemies = [];
+    newUser.password = await bcrypt.hash(newUser.password, 10);
     newUser.photo = newUser.photo ? newUser.photo : "";
     newUser.bio = newUser.bio ? newUser.bio : "";
-    newUser.password = await bcrypt.hash(newUser.password, 10);
+    newUser.friends = [];
+    newUser.enemies = [];
     await User.create(newUser);
     res.json(newUser);
   }

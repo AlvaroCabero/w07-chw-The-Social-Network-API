@@ -111,3 +111,57 @@ describe("Given an userLogin function", () => {
     });
   });
 });
+
+describe("Given an userSignUp function", () => {
+  describe("When it receives a request with an existing username", () => {
+    test("Then it should invoke the next function with a 400 error", async () => {
+      const usernameTest = "Morgan";
+
+      const req = {
+        body: {
+          username: usernameTest,
+        },
+      };
+
+      User.findOne = jest.fn().mockResolvedValue(true);
+      const expectedError = new Error("Username already exists");
+      expectedError.code = 400;
+      const next = jest.fn();
+
+      await userSignUp(req, null, next);
+
+      expect(User.findOne).toHaveBeenCalled();
+      expect(next).toHaveBeenCalledWith(expectedError);
+      expect(next.mock.calls[0][0]).toHaveProperty("code", expectedError.code);
+      expect(next.mock.calls[0][0]).toHaveProperty(
+        "message",
+        expectedError.message
+      );
+    });
+  });
+
+  describe("When it receives a request with a new valid user data", () => {
+    test("Then it should respond with the new user", async () => {
+      const user = {
+        name: "ConsoleDan",
+        username: "consoledan",
+        password: "consoledan",
+        bio: "Soy yo y tal",
+      };
+
+      const req = {
+        body: user,
+      };
+
+      const res = {
+        json: jest.fn(),
+      };
+
+      User.findOne = jest.fn().mockResolvedValue(false);
+
+      await userSignUp(req, res);
+
+      expect(res.json).toHaveBeenCalledWith(user);
+    });
+  });
+});
