@@ -11,7 +11,7 @@ const errorHandler = (error, req, res, next) => {
   debug(chalk.red("An error has occurred: ", error.message));
   if (error instanceof ValidationError) {
     error.code = 400;
-    error.message = "Sent wrong format of request ";
+    error.message = "Sent wrong format of request";
   }
   const message = error.code ? error.message : "General Server Error";
   res.status(error.code || 500).json({ error: message });
