@@ -14,7 +14,6 @@ const request = supertest(app);
 
 let server;
 let testToken;
-// let passwords;
 
 beforeAll(async () => {
   await connectDB(process.env.MONGODB_STRING_TEST);
@@ -40,8 +39,6 @@ beforeEach(async () => {
       _id: "61915e41d36c68d94a084a90",
     },
   ];
-
-  // passwords = [testUsers[0].password, testUsers[1].password];
 
   await User.deleteMany();
   await User.create(testUsers[0]);
