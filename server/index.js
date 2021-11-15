@@ -3,7 +3,7 @@ const chalk = require("chalk");
 const morgan = require("morgan");
 const debug = require("debug")("users:server");
 const cors = require("cors");
-const userRoutes = require("./routes/userRoutes");
+const userRoutes = require("./routes/userRoutes/userRoutes");
 const { notFoundErrorHandler, errorHandler } = require("./middlewares/error");
 
 const app = express();
