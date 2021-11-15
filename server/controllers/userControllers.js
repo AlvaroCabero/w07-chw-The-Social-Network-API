@@ -38,6 +38,7 @@ const userLogin = async (req, res, next) => {
 
 const userSignUp = async (req, res, next) => {
   const newUser = req.body;
+  debug(`HEY ${newUser.username}`);
   const user = await User.findOne({ username: newUser.username });
   if (user) {
     debug(chalk.red("Username already exist"));

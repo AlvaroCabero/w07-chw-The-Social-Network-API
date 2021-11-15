@@ -25,7 +25,7 @@ const connectDB = (connectionString) =>
     });
 
     mongoose.connection.on("close", () => {
-      debug(chalk.green("Closed connection to Database "));
+      debug(chalk.green("Closed connection to Database"));
     });
   });
 
